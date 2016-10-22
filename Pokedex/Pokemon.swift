@@ -25,6 +25,7 @@ class Pokemon {
     private var _nextEvoId: String!
     private var _nextEvoLvl: String!
     private var _movesNameArray: [String]!
+    var storageid: Int!
     
     
     //Start of getters and setters//
@@ -122,6 +123,8 @@ class Pokemon {
         
         self._name = name
         self._pokedexId = pokedexId
+        storageid = 0
+        
         
         self._pokemonURL = "\(URL_BASE)\(URL_POKEMON)\(pokedexId)/"
         
@@ -168,29 +171,39 @@ class Pokemon {
                     self._type = ""
                 }
                 
-                if let movesArr = dict["moves"] as? [Dictionary<String, AnyObject>] {
+                if let movesArr = dict["moves"] as? [Dictionary<String, AnyObject>] , movesArr.count > 0{
                     if let moveName = movesArr[0]["name"] {
                         
                         self._movesNameArray = ["\(moveName)"]
                         
                     }
-                    
-                    
+
                     if movesArr.count > 1 {
+                        
+            // Need to implement clearing the Array when back is pressed to stop the fatal error of index out of range//
                         
                         for y in 1..<movesArr.count {
                             
+                            if self.storageid != 1000 {
+                                
                             if let moveName = movesArr[y]["name"] {
+                                
                                 self._movesNameArray.append ("\(moveName)")
-                                print(self._movesNameArray)
+                                
+                                
+                                
                                 
                             } else {
                                 self._movesNameArray = [""]
                                 
                             }
+                                
+                            } else  {
+                                self._movesNameArray = [""]
                             
                         }
                     }
+                        print("This is a new line for printing" + "\(self._movesNameArray)")
                 }
                 
                 
@@ -256,4 +269,5 @@ class Pokemon {
             completed()
         }
     }
+}
 }
